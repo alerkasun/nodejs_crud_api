@@ -1,0 +1,25 @@
+{
+  "name": "crud_api",
+  "version": "1.0.0",
+  "description": "crud api, no frameworks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alerkasun/nodejs_crud_api.git"
+  },
+  "keywords": [
+    "crud_api",
+    "nodejs"
+  ],
+  "author": "sandulovve@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alerkasun/nodejs_crud_api/issues"
+  },
+  "homepage": "https://github.com/alerkasun/nodejs_crud_api#readme"
+}
