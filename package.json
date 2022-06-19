@@ -26,10 +26,12 @@
     "test": "test"
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.4",
     "nodemon": "^2.0.16",
     "ts-node": "^10.8.1"
   },
   "dependencies": {
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "uuid": "^8.3.2"
   }
 }
