@@ -1,4 +1,17 @@
 # Scoring: CRUD API
+## Simple CRUD API without frameworks
+Implemented base architecture/simple framework, users endpoint and test for it
+
+### How to start
+- node version must be 16 LTS
+- `npm intall`
+
+
+### Commands
+- `npm run start:dev` - start dev server
+- `npm run cypress:open` - run cypress tests(api)
+
+# Requirements
 
 ## Basic Scope
 
