@@ -5,12 +5,12 @@ import { config } from 'dotenv';
 config();
 const PORT = process.env.PORT || 3000;
 
-async function init() {
+export async function init() {
   const server = createServer(async (request, response) => {
     try {
       await router(request, response);
     } catch {
-      console.log('PIZDA')
+      console.log('Something was wrong')
     }
   })
   

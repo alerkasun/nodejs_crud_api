@@ -1,4 +1,4 @@
-import { getUsers, createUser, deleteUser } from '../controllers/UserController'
+import { getUsers, createUser, deleteUser, updateUser } from '../controllers/UserController'
 
 export const router = async (request: any, response: any) => {
   switch (request.method) {
@@ -6,11 +6,10 @@ export const router = async (request: any, response: any) => {
       await getUsers(request, response)
       break;
     case 'POST':
-      console.log("POST")
       await createUser(request, response)
       break;
     case 'PUT':
-      console.log("PUT")
+      await updateUser(request, response)
       break;
     case 'DELETE':
       console.log("DELETE")

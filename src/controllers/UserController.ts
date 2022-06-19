@@ -1,6 +1,6 @@
 import { IUser } from './../helpers/interfaces';
 import { IncomingMessage, ServerResponse } from 'http';
-import { findAllUsers, createNewUser, findUserById, deleteUserById } from '../models/users';
+import { findAllUsers, createNewUser, findUserById, deleteUserById, updateExistingUser } from '../models/users';
 import { parse } from 'path';
 import { validate } from 'uuid';
 
@@ -54,26 +54,23 @@ const getAllUsers = async (request: any, response: any ) => {
 
 export const createUser = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
   try {
-    // @ts-ignore
-    console.log('age', request.params)
-    const body:any = await getPostData(request);
-    console.log('----------------------------------------------')
-    console.log(JSON.parse(JSON.parse(body)));
-    console.log('----------------------------------------------')
+    const body: any = await getPostData(request)
+    const { username, age, hobbies } = JSON.parse(body)
+    const userParams = {username, age, hobbies}
+    const user = await createNewUser( userParams )
+    if (user) {
+      response.writeHead(201, { "Content-Type" : "application/json" });
+      response.end();
+    } else {
+      response.writeHead(400, { "Content-Type" : "application/json" });
+      response.end(JSON.stringify({message: `User ${(user as IUser).username} can't be added`}))
+    }
 
-    // const {username, age} = JSON.parse(JSON.parse(body));
-
-    // console.log(age)
-    // console.log(username)
-
-    await createNewUser(request)
-    const users = await findAllUsers();
-    response.writeHead(201, { "Content-Type" : "application/json" });
-  } catch (error: any) {
-    response.writeHead(500, { "Content-Type" : "application/json" });
-    response.end(JSON.stringify({message: error.message}))
+  } catch (error) {
+      console.log(error)
   }
 }
+
 export const deleteUser = async (request: any, response: ServerResponse): Promise<void> => {
   const url = parse(request.url as string);
   if(validate(url.name)) {
@@ -93,49 +90,49 @@ export const deleteUser = async (request: any, response: ServerResponse): Promis
   }
 }
 
-
-
-export async function getPostData(request: IncomingMessage) {
+export async function getPostData(req:any) {
   return new Promise((resolve, reject) => {
-      try {
-          let body:any = '';
-          request.on('data', (chunk: string) => {
-              body += chunk.toString();
-          })
-          request.on('end', () => {
-            console.log('3223423423432')
-              resolve(Buffer.concat(body).toString())
-          })
-      }
-      catch (e) {
-          reject(e)
-      }
+    try {
+      let body = ''
+
+      req.on('data', (chunk: any) => {
+        body += chunk.toString()
+      })
+
+      req.on('end', () => {
+        resolve(body)
+      })
+    } catch (error: any) {
+      reject(err)
+    }
   })
-  // let body: any = [];
-  //   request.on('data', (chunk) => {
-  //     console.log(chunk, '555555')
-  //     body.push(chunk);
-  //   });
-
-  //   request.on('end', () => {
-  //     try {
-  //       if (body.length) {
-  //         console.log('66666')
-  //         console.log(JSON.parse(Buffer.concat(body).toString()), '123123123123123')
-  //         // body = JSON.parse(Buffer.concat(body).toString());
-  //         console.log(body, "bodybodybodybodybody")
-  //       }
-  //     }
-  //     catch (e) {console.log('нам пизда')}
-  // })
 }
 
-
-export async function deletesUser(user:any) {
-console.log(user, "51231213212313")
-return new Promise((resolve, reject) => {
-
-
-})
+export const updateUser = async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
+  // Сорри за копипасту и код, не успеваю переписать нормально
+  if (request.url && USER_PATH.test(request.url) && request.method === "PUT") {
+    const url = parse(request.url as string);
+    if(validate(url.name)) {
+      const url = parse(request.url as string);
+      if(validate(url.name)) {
+        const user = await findUserById(url.name)
+        if (user) {
+          const id = (user as IUser).id;
+          const body: any = await getPostData(request)
+          const { username, age, hobbies } = JSON.parse(body)
+          const userParams = {username, age, hobbies}
+          const updatedUser = await updateExistingUser(id, userParams as IUser)
+          console.log(updatedUser, "updatedUser")
+          response.writeHead(200, { "Content-Type" : "application/json" });
+          response.end();
+        } else {}
+      }
+    } else {
+      notUuid(response)
+    }
+  }
 }
 
+function err(err: any) {
+  throw new Error('Function not implemented.');
+}

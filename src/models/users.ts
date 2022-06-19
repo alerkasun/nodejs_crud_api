@@ -1,20 +1,8 @@
 import { IUser } from '../helpers/interfaces';
 import { parse } from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
-const Users: IUser[] = [
-  {
-    id: "f591c565-8545-4142-8fc2-5bb9d82f354e",
-    username: "Snoop",
-    age: 27,
-    hobbies:["drinking peer, smoke weed every day"]
-  },
-  {
-    id: "14f9301e-8f41-40c4-9dc5-7f28fdd88b85",
-    username: "Keany",
-    age: 27,
-    hobbies:["drinking peer, be Neo"]
-  }
-]
+const Users: IUser[] = []
 
 export function findAllUsers () {
   return new Promise((resolve) => {
@@ -22,36 +10,20 @@ export function findAllUsers () {
   })
 }
 
-export function createNewUser(user: any) {
+export function createNewUser(user: IUser) {
   return new Promise(resolve => {
-    try {
-      const newUser:IUser = { id: '1', ...user as Omit<IUser, 'id'> };
+      const id = uuidv4();
+      const newUser: IUser = { id: id, ...user };
       Users.push(newUser);
-      // console.log(newUser)
       resolve(newUser);
-    } catch (error: any) {
-      console.log(error.message)
-    }
   })
 }
 
 export function findUserById(id: string) {
-    return new Promise(resolve => {
-        const user = Users.find(item => item.id === id);
-        resolve(user);
-    })
-}
-export function create(user:IUser) {
-    return new Promise(resolve => {
-        try {
-            // const newUser:IUser = {id:'ramdom_uuid', ...user};
-            // Users.push(newUser);
-            // resolve(newUser);
-        }
-        catch (error: any) {
-            console.log(error.message)
-        }
-    })
+  return new Promise(resolve => {
+    const user = Users.find(item => item.id === id);
+    resolve(user);
+  })
 }
 
 export function deleteUserById(user: IUser) {
@@ -62,18 +34,12 @@ export function deleteUserById(user: IUser) {
   })
 }
 
+export function updateExistingUser(id: any, data: IUser) {
+  return new Promise(resolve => {
+    const userIndex = Users.findIndex((user) => user.id === id);
+    const updatedUser: IUser = { id, ...data };
+    Users.splice(userIndex, 1, updatedUser);
 
-// export function update(id: string, data:IUser) {
-//     return new Promise(resolve => {
-//         const userIndex = Users.findIndex(item => item.id === id);
-//         Users[userIndex] = {id, ...data}
-//         resolve(Users[userIndex]);
-//     })
-// }
-
-// export function remove(id:string) {
-//     return new Promise<void>(resolve => {
-//         Users.filter(item => item.id !== id);
-//         resolve()
-//     })
-// }
+    resolve(Users[userIndex]);
+  })
+}
