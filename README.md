@@ -5,11 +5,19 @@ Implemented base architecture/simple framework, users endpoint and test for it
 ### How to start
 - node version must be 16 LTS
 - `npm intall`
+- git clone `git@github.com:alerkasun/nodejs_crud_api.git`
+- `cd nodejs_crud_api`
+- `git fetch`
+- `git checkout feature`
 
 
 ### Commands
 - `npm run start:dev` - start dev server
 - `npm run cypress:open` - run cypress tests(api)
+
+### Testing
+- `npm run cypress:open` - run cypress tests(api)
+- you should run dev server: `npm run start:dev`
 
 # Requirements
 
@@ -18,7 +26,7 @@ Implemented base architecture/simple framework, users endpoint and test for it
 - **+10** The repository with the application contains a `Readme.md` file containing detailed instructions for installing, running and using the application
 - **+10** **GET** `api/user` implemented properly
 - **+10** **GET** `api/user/${userId}` implemented properly
-- **+10** **POST** `api/user` implemented properly
+- **+10** **POST** `api/user` implemented properlyMarkdown
 - **+10** **PUT** `api/user/{userId}` implemented properly
 - **+10** **DELETE** `api/user/${userId}` implemented properly
 - **+6** Users are stored in the form described in the technical requirements
